@@ -49,6 +49,12 @@ The package exports a `Board` component which is the one you'd use to render the
 | columnWidth         | `number`                                                |    no    | Initial min column width                                                |
 | accessoryRight      | `function\|View`                                        |    no    | Render end of the board. Useful when rendering virtual add more column. |
 
+Update repository data:
+```js
+repository.updateData(data);
+setRepository(repository);
+```
+
 ## Usage
 
 You need to build `Repository`
