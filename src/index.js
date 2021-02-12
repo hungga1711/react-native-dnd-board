@@ -1,15 +1,15 @@
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from "react";
 import {
   PanGestureHandler,
   State,
   ScrollView,
-} from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+} from "react-native-gesture-handler";
+import Animated from "react-native-reanimated";
 
-import style from './style';
-import Column from './components/column';
-import Repository from './handlers/repository';
-import Utils from './commons/utils';
+import style from "./style";
+import Column from "./components/column";
+import Repository from "./handlers/repository";
+import Utils from "./commons/utils";
 
 const { block, call, cond } = Animated;
 
@@ -22,7 +22,7 @@ const DraggableBoard = ({
   renderRow,
   columnWidth,
   accessoryRight,
-  onCardPress = () => {},
+  onRowPress = () => {},
   onDragEnd = () => {},
   style: boardStyle,
 }) => {
@@ -52,13 +52,13 @@ const DraggableBoard = ({
             },
           },
         ],
-        { useNativeDriver: true },
+        { useNativeDriver: true }
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
-  const onHandlerStateChange = event => {
+  const onHandlerStateChange = (event) => {
     switch (event.nativeEvent.state) {
       case State.CANCELLED:
       case State.END:
@@ -78,7 +78,7 @@ const DraggableBoard = ({
             onDragEnd(
               hoverRowItem.current.oldColumnId,
               hoverRowItem.current.columnId,
-              hoverRowItem.current,
+              hoverRowItem.current
             );
 
             repository.updateOriginalData();
@@ -103,7 +103,7 @@ const DraggableBoard = ({
         hoverRowItem.current,
         x,
         y,
-        listenRowChangeColumn,
+        listenRowChangeColumn
       );
 
       if (columnAtPosition && scrollViewRef.current) {
@@ -136,18 +136,18 @@ const DraggableBoard = ({
     //
   };
 
-  const onScroll = event => {
+  const onScroll = (event) => {
     scrollOffset.current = event.nativeEvent.contentOffset.x;
   };
 
-  const onScrollEnd = event => {
+  const onScrollEnd = (event) => {
     scrollOffset.current = event.nativeEvent.contentOffset.x;
     repository.measureColumnsLayout(scrollOffset.current);
   };
 
   const keyExtractor = useCallback(
     (item, index) => `${item.id}${item.name}${index}`,
-    [],
+    []
   );
 
   const renderHoverComponent = () => {
@@ -159,7 +159,7 @@ const DraggableBoard = ({
         const hoverStyle = [
           style.hoverComponent,
           {
-            transform: [{ translateX }, { translateY }, { rotate: '8deg' }],
+            transform: [{ translateX }, { translateY }, { rotate: "8deg" }],
           },
           {
             top: y - SCROLL_THRESHOLD,
@@ -186,9 +186,8 @@ const DraggableBoard = ({
     setHoverComponent(hoverItem);
   };
 
-  const drag = column => {
+  const drag = (column) => {
     const hoverColumn = renderColumnWrapper({
-      isActive: true,
       move: moveItem,
       item: column.data,
       index: column.index,
@@ -214,7 +213,7 @@ const DraggableBoard = ({
           renderRow={renderRow}
           scrollEnabled={!movingMode}
           columnWidth={columnWidth}
-          onCardPress={onCardPress}
+          onRowPress={onRowPress}
         />
       );
 
@@ -225,8 +224,8 @@ const DraggableBoard = ({
         drag: () => drag(column),
         layoutProps: {
           key,
-          ref: ref => repository.updateColumnRef(column.id, ref),
-          onLayout: layout => repository.updateColumnLayout(column.id),
+          ref: (ref) => repository.updateColumnRef(column.id, ref),
+          onLayout: (layout) => repository.updateColumnLayout(column.id),
         },
       });
     });
@@ -235,7 +234,8 @@ const DraggableBoard = ({
   return (
     <PanGestureHandler
       onGestureEvent={onPanGestureEvent}
-      onHandlerStateChange={onHandlerStateChange}>
+      onHandlerStateChange={onHandlerStateChange}
+    >
       <Animated.View style={[style.container, boardStyle]}>
         <ScrollView
           ref={scrollViewRef}
@@ -246,7 +246,8 @@ const DraggableBoard = ({
           showsVerticalScrollIndicator={false}
           onScroll={onScroll}
           onScrollEndDrag={onScrollEnd}
-          onMomentumScrollEnd={onScrollEnd}>
+          onMomentumScrollEnd={onScrollEnd}
+        >
           {renderColumns()}
 
           <Animated.Code>
@@ -254,11 +255,11 @@ const DraggableBoard = ({
               block([
                 cond(
                   movingMode,
-                  call([absoluteX, absoluteY], handleRowPosition),
+                  call([absoluteX, absoluteY], handleRowPosition)
                 ),
                 cond(
                   movingMode,
-                  call([translateX, translateY], handleColumnPosition),
+                  call([translateX, translateY], handleColumnPosition)
                 ),
               ])
             }

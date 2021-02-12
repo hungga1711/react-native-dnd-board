@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
-  ScrollView,
+  SafeAreaView,
   View,
   Text,
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
 
-import Board, { Repository } from './lib';
+import Board, { Repository } from 'react-native-dnd-board';
 import Utils from './lib/commons/utils';
 
 const mockData = [
@@ -126,7 +126,7 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#014A81" />
       <View style={styles.header}>
         <Text style={styles.hederName}>React Native DnD Board</Text>
@@ -137,7 +137,7 @@ const App = () => {
         repository={repository}
         renderRow={renderCard}
         renderColumnWrapper={renderColumn}
-        onCardPress={onCardPress}
+        onRowPress={onCardPress}
         onDragEnd={onDragEnd}
         columnWidth={COLUMN_WIDTH}
         accessoryRight={
@@ -148,7 +148,7 @@ const App = () => {
           </View>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

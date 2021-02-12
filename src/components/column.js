@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { View, TouchableWithoutFeedback } from "react-native";
+import Animated from "react-native-reanimated";
+import { FlatList } from "react-native-gesture-handler";
 
-import style from '../style';
-import Row from './row';
+import style from "../style";
+import Row from "./row";
 
 const Column = ({
   repository,
@@ -14,7 +14,7 @@ const Column = ({
   renderRow,
   scrollEnabled,
   columnWidth,
-  onCardPress,
+  onRowPress = () => {},
 }) => {
   const [rows, setRows] = useState(column.rows);
   const [forceRenderWidth, setForceRenderWidth] = useState(0);
@@ -22,29 +22,30 @@ const Column = ({
   const verticalOffset = useRef(0);
   const listRef = useRef();
 
-  const onScroll = useCallback(event => {
+  const onScroll = useCallback((event) => {
     verticalOffset.current = event.nativeEvent.contentOffset.x;
   }, []);
 
   const onScrollEnd = useCallback(
-    event => {
+    (event) => {
       verticalOffset.current = event.nativeEvent.contentOffset.x;
       column.measureRowLayout();
     },
-    [column],
+    [column]
   );
 
   const renderRowItem = ({ item, index }) => {
     return (
       <View
-        ref={ref => repository.updateRowRef(column.id, item.id, ref)}
-        onLayout={layout => repository.updateRowLayout(column.id, item.id)}>
+        ref={(ref) => repository.updateRowRef(column.id, item.id, ref)}
+        onLayout={(layout) => repository.updateRowLayout(column.id, item.id)}
+      >
         <Row
           row={item}
           move={move}
           renderItem={renderRow}
           hidden={item.hidden}
-          onPress={() => onCardPress(item)}
+          onPress={() => onRowPress(item)}
         />
       </View>
     );
@@ -57,7 +58,7 @@ const Column = ({
   };
 
   useEffect(() => {
-    repository.addListener(column.id, 'reload', reload);
+    repository.addListener(column.id, "reload", reload);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,7 +66,7 @@ const Column = ({
     setRows(column.rows);
   }, [column.id, column.rows, repository]);
 
-  const setRef = ref => {
+  const setRef = (ref) => {
     listRef.current = ref;
     repository.setColumnScrollRef(column.id, listRef.current);
   };
