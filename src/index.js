@@ -199,8 +199,6 @@ const DraggableBoard = ({
     const columns = repository.getColumns();
 
     return columns.map((column, index) => {
-      // column.setIndex(index);
-
       const key = keyExtractor(column, index);
 
       const columnComponent = (
@@ -244,6 +242,7 @@ const DraggableBoard = ({
           nestedScrollEnabled
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
           onScroll={onScroll}
           onScrollEndDrag={onScrollEnd}
           onMomentumScrollEnd={onScrollEnd}
