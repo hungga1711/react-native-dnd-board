@@ -1,6 +1,8 @@
 # React Native DnD Board
 
-A drag and drop Kanban board for React Native using [Reanimated (V1)](https://github.com/software-mansion/react-native-reanimated) and [React Native Gesture Handler](https://github.com/software-mansion/react-native-gesture-handler)
+A drag and drop Kanban board for React Native using [Reanimated (V1)](https://github.com/software-mansion/react-native-reanimated) and [React Native Gesture Handler](https://github.com/software-mansion/react-native-gesture-handler).
+
+<img src="https://github.com/hungga1711/react-native-dnd-board/blob/master/demo-ios.gif" width="400">   <img src="https://github.com/hungga1711/react-native-dnd-board/blob/master/demo-android.gif" width="396">
 
 ## Installation
 
@@ -38,6 +40,8 @@ yarn add react-native-dnd-board
 
 The package exports a `Board` component which is the one you'd use to render the dnd board and a `Repository` class to handle column, row layout.
 
+### `Board`
+
 | Property            | Type                                                    | Required | Description                                                             |
 | :------------------ | :------------------------------------------------------ | :------: | :---------------------------------------------------------------------- |
 | repository          | `Repository`                                            |   yes    | Object that holds data                                                  |
@@ -49,10 +53,20 @@ The package exports a `Board` component which is the one you'd use to render the
 | columnWidth         | `number`                                                |    no    | Initial min column width                                                |
 | accessoryRight      | `function\|View`                                        |    no    | Render end of the board. Useful when rendering virtual add more column. |
 
+### `Repository`
+
 Update repository data:
 ```js
 repository.updateData(data);
 setRepository(repository);
+```
+Add new row item:
+```js
+repository.addRow(data);
+```
+Get rows with index updated:
+```js
+const { rows } = repository.getItemsChanged();
 ```
 
 ## Usage
