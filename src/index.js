@@ -36,8 +36,8 @@ const DraggableBoard = ({
   let absoluteY = useRef(new Animated.Value(0)).current;
 
   const scrollViewRef = useRef();
-  const hoverRowItem = useRef();
   const scrollOffset = useRef(0);
+  const hoverRowItem = useRef();
 
   const onPanGestureEvent = useMemo(
     () =>
@@ -58,7 +58,7 @@ const DraggableBoard = ({
     []
   );
 
-  const onHandlerStateChange = (event) => {
+  const onHandlerStateChange = useCallback((event) => {
     switch (event.nativeEvent.state) {
       case State.CANCELLED:
       case State.END:
@@ -90,7 +90,7 @@ const DraggableBoard = ({
 
         break;
     }
-  };
+  }, []);
 
   const listenRowChangeColumn = (fromColumnId, toColumnId) => {
     hoverRowItem.current.columnId = toColumnId;
@@ -142,7 +142,7 @@ const DraggableBoard = ({
 
   const onScrollEnd = (event) => {
     scrollOffset.current = event.nativeEvent.contentOffset.x;
-    repository.measureColumnsLayout(scrollOffset.current);
+    repository.measureColumnsLayout();
   };
 
   const keyExtractor = useCallback(

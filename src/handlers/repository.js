@@ -1,6 +1,6 @@
-import ColumnItem from './column-item';
-import RowItem from './row-item';
-import Mover from './mover';
+import ColumnItem from "./column-item";
+import RowItem from "./row-item";
+import Mover from "./mover";
 
 export default class Repository {
   constructor(data) {
@@ -10,10 +10,22 @@ export default class Repository {
     this.initialData(data);
     this.mover = new Mover();
     this.listeners = {};
-    this.boardListeners = {};
   }
 
-  initialData = data => {
+  addListener = (columnId, event, callback) => {
+    this.listeners[columnId] = {
+      ...this.listeners[columnId],
+      [event]: callback,
+    };
+  };
+
+  notify(columnId, event) {
+    if (this.listeners[columnId]) {
+      this.listeners[columnId][event]();
+    }
+  }
+
+  initialData = (data) => {
     data.forEach((column, columnIndex) => {
       const rows = column.rows.map((item, index) => {
         return new RowItem({
@@ -34,7 +46,7 @@ export default class Repository {
       this.originalData[column.id] = {
         id: column.id,
         index: columnIndex,
-        rows: rows.map(row => ({
+        rows: rows.map((row) => ({
           id: row.id,
           index: row.index,
         })),
@@ -42,35 +54,14 @@ export default class Repository {
     });
   };
 
-  addBoardListener = (event, callback) => {
-    this.boardListeners[event] = callback;
-  };
-
-  notifyBoard = event => {
-    this.boardListeners[event]();
-  };
-
-  addListener = (columnId, event, callback) => {
-    this.listeners[columnId] = {
-      ...this.listeners[columnId],
-      [event]: callback,
-    };
-  };
-
-  notify(columnId, event) {
-    if (this.listeners[columnId]) {
-      this.listeners[columnId][event]();
-    }
-  }
-
-  updateData = data => {
+  updateData = (data) => {
     data.forEach((column, columnIndex) => {
       const rows = column.rows.map((item, index) => {
         let existingAttributes = {};
 
         if (this.columns[column.id]) {
           const existingIndex = this.columns[column.id].rows.findIndex(
-            row => row.id === item.id,
+            (row) => row.id === item.id
           );
           if (existingIndex > -1) {
             existingAttributes = this.columns[column.id].rows[
@@ -103,7 +94,7 @@ export default class Repository {
       this.originalData[column.id] = {
         id: column.id,
         index: columnIndex,
-        rows: rows.map(row => ({
+        rows: rows.map((row) => ({
           id: row.id,
           index: row.index,
         })),
@@ -119,15 +110,15 @@ export default class Repository {
     });
 
     this.columns[columnId].addRow(rowItem);
-    this.notify(columnId, 'reload');
+    this.notify(columnId, "reload");
   };
 
   updateOriginalData = () => {
-    Object.keys(this.columns).forEach(columnId => {
+    Object.keys(this.columns).forEach((columnId) => {
       this.originalData[columnId] = {
         id: this.columns[columnId].id,
         index: this.columns[columnId].index,
-        rows: this.columns[columnId].rows.map(row => ({
+        rows: this.columns[columnId].rows.map((row) => ({
           id: row.id,
           index: row.index,
         })),
@@ -135,18 +126,18 @@ export default class Repository {
     });
   };
 
-  checkDataChanged = () => {
+  getItemsChanged = () => {
     const columns = [];
     const rows = [];
 
-    Object.keys(this.originalData).forEach(columnId => {
+    Object.keys(this.originalData).forEach((columnId) => {
       if (this.originalData[columnId].index !== this.columns[columnId].index) {
         columns.push({ id: columnId, index: this.columns[columnId].index });
       }
 
-      this.columns[columnId].rows.forEach(row => {
+      this.columns[columnId].rows.forEach((row) => {
         const rowIndex = this.originalData[columnId].rows.findIndex(
-          item => item.id === row.id,
+          (item) => item.id === row.id
         );
         if (rowIndex > -1 && row.index !== rowIndex) {
           rows.push({ id: row.id, index: row.index });
@@ -161,11 +152,11 @@ export default class Repository {
     return Object.values(this.columns).sort((a, b) => a.index > b.index);
   };
 
-  getColumnById = columnId => {
+  getColumnById = (columnId) => {
     return this.columns[columnId];
   };
 
-  getRowsByColumnId = columnId => {
+  getRowsByColumnId = (columnId) => {
     return this.columns[columnId].rows;
   };
 
@@ -177,15 +168,15 @@ export default class Repository {
     this.columns[columnId].measureLayout(offset);
   };
 
-  measureColumnsLayout = scrollOffset => {
-    Object.keys(this.columns).forEach(columnId => {
+  measureColumnsLayout = (scrollOffset) => {
+    Object.keys(this.columns).forEach((columnId) => {
       this.columns[columnId].measureLayout(scrollOffset);
     });
   };
 
   updateRowRef = (columnId, rowId, ref) => {
     const rowIndex = this.columns[columnId].rows.findIndex(
-      row => row.id === rowId,
+      (row) => row.id === rowId
     );
     if (rowIndex > -1) {
       this.columns[columnId].rows[rowIndex].setRef(ref);
@@ -194,38 +185,38 @@ export default class Repository {
 
   updateRowLayout = (columnId, rowId) => {
     const rowIndex = this.columns[columnId].rows.findIndex(
-      row => row.id === rowId,
+      (row) => row.id === rowId
     );
     if (rowIndex > -1) {
       this.columns[columnId].rows[rowIndex].measureLayout();
     }
   };
 
-  hideRow = row => {
+  hideRow = (row) => {
     const rowIndex = this.columns[row.columnId].rows.findIndex(
-      item => item.id === row.id,
+      (item) => item.id === row.id
     );
     if (rowIndex > -1) {
       this.columns[row.columnId].rows[rowIndex].setHidden(true);
     }
   };
 
-  showRow = row => {
+  showRow = (row) => {
     const rowIndex = this.columns[row.columnId].rows.findIndex(
-      item => item.id === row.id,
+      (item) => item.id === row.id
     );
     if (rowIndex > -1) {
       this.columns[row.columnId].rows[rowIndex].setHidden(false);
     }
   };
 
-  findRow = row => {
-    return this.columns[row.columnId].rows.find(item => item.id === row.id);
+  findRow = (row) => {
+    return this.columns[row.columnId].rows.find((item) => item.id === row.id);
   };
 
   moveRow = (draggedRow, x, y, changeColumnCallback) => {
     const rowIndex = this.columns[draggedRow.columnId].rows.findIndex(
-      item => item.id === draggedRow.id,
+      (item) => item.id === draggedRow.id
     );
 
     if (rowIndex > -1) {
@@ -235,7 +226,7 @@ export default class Repository {
       const columnAtPosition = this.mover.findColumnAtPosition(
         this.getColumns(),
         x,
-        y,
+        y
       );
 
       if (!columnAtPosition) {
@@ -253,7 +244,7 @@ export default class Repository {
         this.columns[toColumnId].rows,
         x,
         y,
-        row,
+        row
       );
 
       if (
@@ -269,7 +260,7 @@ export default class Repository {
           this,
           row.index,
           rowAtPosition.index,
-          toColumnId,
+          toColumnId
         );
       }
 

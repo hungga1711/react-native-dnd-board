@@ -6,10 +6,10 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 import Board, { Repository } from 'react-native-dnd-board';
-import Utils from './lib/commons/utils';
 
 const mockData = [
   {
@@ -68,7 +68,7 @@ const mockData = [
   },
 ];
 
-const COLUMN_WIDTH = Utils.deviceWidth * 0.6;
+const COLUMN_WIDTH = Dimensions.get('window').width * 0.6;
 
 const App = () => {
   const [repository, setRepository] = useState(new Repository(mockData));
@@ -111,14 +111,7 @@ const App = () => {
   };
 
   const onDragEnd = (fromColumnId, toColumnId, card) => {
-    console.log(
-      'Drag from columnId: ',
-      fromColumnId,
-      ' to columnId: ',
-      toColumnId,
-      ' Card ID: ',
-      card.id,
-    );
+    //
   };
 
   const addColumn = () => {

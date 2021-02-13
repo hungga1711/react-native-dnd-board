@@ -8,7 +8,7 @@ export default class Mover {
   }
 
   findColumnAtPosition = (columns, x, y) => {
-    return columns.find(column => {
+    return columns.find((column) => {
       let layout = column.layout;
 
       if (!layout) {
@@ -26,6 +26,10 @@ export default class Mover {
 
   selectItem = (x, y, draggedRow, item) => {
     const layout = item.layout;
+    if (!layout || !draggedRow.layout) {
+      return false;
+    }
+
     const heightDiff = Math.abs(draggedRow.layout.height - layout.height);
     const left = x > layout.x;
     const right = x < layout.x + layout.width;
@@ -46,7 +50,7 @@ export default class Mover {
   };
 
   findRowAtPosition = (rows, x, y, draggedRow) => {
-    let item = rows.find(i => this.selectItem(x, y, draggedRow, i));
+    let item = rows.find((i) => this.selectItem(x, y, draggedRow, i));
 
     let firstItem = rows[0];
     if (!item && firstItem && firstItem.layout && y <= firstItem.layout.y) {
@@ -64,13 +68,13 @@ export default class Mover {
   moveToOtherColumn = (repository, row, fromColumnId, toColumnId) => {
     repository.columns[fromColumnId].rows = repository.columns[
       fromColumnId
-    ].rows.filter(item => item.id !== row.id);
+    ].rows.filter((item) => item.id !== row.id);
 
     repository.columns[fromColumnId].measureRowIndex();
     repository.columns[toColumnId].addRow(row);
 
-    repository.notify(fromColumnId, 'reload');
-    repository.notify(toColumnId, 'reload');
+    repository.notify(fromColumnId, "reload");
+    repository.notify(toColumnId, "reload");
   };
 
   switchItems = (firstItem, secondItem) => {
@@ -97,7 +101,7 @@ export default class Mover {
     repository,
     draggedRowIndex,
     rowAtPositionIndex,
-    toColumnId,
+    toColumnId
   ) => {
     let rows = repository.columns[toColumnId].rows;
 
@@ -114,6 +118,6 @@ export default class Mover {
     }
 
     repository.columns[toColumnId].measureRowIndex();
-    repository.notify(toColumnId, 'reload');
+    repository.notify(toColumnId, "reload");
   };
 }
