@@ -2,7 +2,7 @@
 
 A drag and drop Kanban board for React Native using [Reanimated (V1)](https://github.com/software-mansion/react-native-reanimated) and [React Native Gesture Handler](https://github.com/software-mansion/react-native-gesture-handler).
 
-<img src="https://github.com/hungga1711/react-native-dnd-board/blob/master/demo-ios.gif" width="400">   <img src="https://github.com/hungga1711/react-native-dnd-board/blob/master/demo-android.gif" width="396">
+<img src="./demo-ios.gif" width="400">   <img src="./demo-android.gif" width="396">
 
 ## Installation
 
