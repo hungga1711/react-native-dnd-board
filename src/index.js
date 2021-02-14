@@ -58,7 +58,7 @@ const DraggableBoard = ({
     []
   );
 
-  const onHandlerStateChange = useCallback((event) => {
+  const onHandlerStateChange = (event) => {
     switch (event.nativeEvent.state) {
       case State.CANCELLED:
       case State.END:
@@ -90,7 +90,7 @@ const DraggableBoard = ({
 
         break;
     }
-  }, []);
+  };
 
   const listenRowChangeColumn = (fromColumnId, toColumnId) => {
     hoverRowItem.current.columnId = toColumnId;
