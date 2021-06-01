@@ -1,6 +1,6 @@
 {
   "name": "react-native-dnd-board",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Drag and drop Kanban board like Trello",
   "main": "src/index.js",
   "scripts": {
