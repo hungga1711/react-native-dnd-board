@@ -4,3 +4,8 @@ node_modules/
 npm-debug.log
 
 package-lock.json
+
+demo-android.gif
+demo-ios.gif
+
+.prettierrc.js
