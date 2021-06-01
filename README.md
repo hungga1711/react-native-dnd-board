@@ -55,19 +55,36 @@ The package exports a `Board` component which is the one you'd use to render the
 
 ### `Repository`
 
-Update repository data:
+#### Update repository data:
 ```js
 repository.updateData(data);
 ```
-Add new row item:
+#### Handle column data:
 ```js
-repository.addRow(data);
+repository.addColumn(data);
 ```
-Get rows with index updated:
+```js
+repository.updateColumn(columnId, data);
+```
+```js
+repository.deleteColumn(columnId);
+```
+#### Handle row data:
+```js
+repository.addRow(columnId, data);
+```
+```js
+repository.updateRow(rowId, data);
+```
+```js
+repository.deleteRow(rowId);
+```
+
+#### Get rows with index updated:
 ```js
 const { rows } = repository.getItemsChanged();
 ```
-
+**[Example](https://github.com/hungga1711/react-native-dnd-board/blob/master/example/App.js)**
 ## Usage
 
 You need to build `Repository`
