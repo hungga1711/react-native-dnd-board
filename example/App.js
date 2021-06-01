@@ -68,34 +68,105 @@ const mockData = [
   },
 ];
 
+let mockDataLength = mockData.length;
+let mockDataRowLength = {};
+mockData.forEach(column => {
+  mockDataRowLength[column.id] = column.rows.length;
+});
+
 const COLUMN_WIDTH = Dimensions.get('window').width * 0.6;
 
 const App = () => {
-  const [repository, setRepository] = useState(new Repository(mockData));
+  const [repository] = useState(new Repository(mockData));
+
+  const addCard = columnId => {
+    const data = {
+      id: `${columnId}${++mockDataRowLength[columnId]}`,
+      name: `Row ${mockDataRowLength[columnId]} (Column ${columnId})`,
+    };
+
+    // Call api add row here
+    // Add row to the board
+    repository.addRow(columnId, data);
+  };
+
+  const updateCard = (cardId, data) => {
+    const dummy = data || { name: 'Row updated' };
+
+    // Call api update row here
+    // Update row on the board
+    repository.updateRow(cardId, dummy);
+  };
+
+  const deleteCard = cardId => {
+    // Call api delete row here
+    // Delete row on the board
+    repository.deleteRow(cardId);
+  };
 
   const renderCard = ({ item }) => {
     return (
       <View style={styles.card}>
         <Text>{item.name}</Text>
+        <TouchableOpacity
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          onPress={() => deleteCard(item.id)}>
+          <Text>✕</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 
-  const addCard = columnId => {
-    const length = repository.columns[columnId].rows.length;
-
-    const row = {
-      id: `${columnId}${length + 1}`,
-      name: `Row ${length + 1} (Column ${columnId})`,
+  const addColumn = () => {
+    mockDataRowLength[++mockDataLength] = 0;
+    const column = {
+      id: mockDataLength,
+      name: `Column ${mockDataLength}`,
+      rows: [],
     };
 
-    repository.addRow(columnId, row);
+    // Call api add column here
+    mockData.push(column);
+
+    // Add column to the board
+    repository.addColumn(column);
+  };
+
+  const updateColumn = (columnId, data) => {
+    const dummy = data || { name: 'Column name updated' };
+
+    // Call api update column here
+    const columnIndex = mockData.findIndex(column => column.id === columnId);
+    if (columnIndex > -1) {
+      mockData[columnIndex].name = dummy.name;
+    }
+
+    // Update column on the board
+    repository.updateColumn(columnId, dummy);
+  };
+
+  const deleteColumn = columnId => {
+    // Call api delete column here
+    const columnIndex = mockData.findIndex(column => column.id === columnId);
+    if (columnIndex > -1) {
+      mockData.splice(columnIndex, 1);
+    }
+
+    // Delete column on the board
+    repository.deleteColumn(columnId);
   };
 
   const renderColumn = ({ item, columnComponent, layoutProps, index }) => {
     return (
       <View style={styles.column} {...layoutProps}>
-        <Text style={styles.columnName}>{item.name}</Text>
+        <View style={styles.columnHeader}>
+          <Text style={styles.columnName}>{item.name}</Text>
+          <TouchableOpacity
+            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+            onPress={() => deleteColumn(item.id)}>
+            <Text>✕</Text>
+          </TouchableOpacity>
+        </View>
         {columnComponent}
         <TouchableOpacity
           style={styles.addCard}
@@ -112,10 +183,6 @@ const App = () => {
 
   const onDragEnd = (fromColumnId, toColumnId, card) => {
     //
-  };
-
-  const addColumn = () => {
-    // TODO
   };
 
   return (
@@ -169,8 +236,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 4,
   },
-  columnName: {
+  columnHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  columnName: {
     fontWeight: 'bold',
   },
   addColumn: {
@@ -186,6 +258,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
     marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   addCard: {
     justifyContent: 'center',
