@@ -58,7 +58,6 @@ The package exports a `Board` component which is the one you'd use to render the
 Update repository data:
 ```js
 repository.updateData(data);
-setRepository(repository);
 ```
 Add new row item:
 ```js
