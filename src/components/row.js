@@ -1,8 +1,8 @@
-import React, { useMemo, memo } from "react";
-import { View, TouchableWithoutFeedback } from "react-native";
-import Animated from "react-native-reanimated";
+import React, { memo } from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-import style from "../style";
+import style from '../style';
 
 const Row = memo(({ row, move, renderItem, hidden, onPress }) => {
   const onDragBegin = () => {
@@ -24,8 +24,7 @@ const Row = memo(({ row, move, renderItem, hidden, onPress }) => {
     <TouchableWithoutFeedback
       onLongPress={onDragBegin}
       delayLongPress={300}
-      onPress={onPress}
-    >
+      onPress={onPress}>
       <Animated.View style={hidden ? style.invisible : style.visible}>
         {component}
       </Animated.View>
