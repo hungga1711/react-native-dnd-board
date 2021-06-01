@@ -57,7 +57,9 @@ export default class Column {
 
   measureRowLayout = scrollOffsetX => {
     this.rows.forEach(row => {
-      row.measureLayout(scrollOffsetX);
+      if (row.measureLayout) {
+        row.measureLayout(scrollOffsetX);
+      }
     });
   };
 
