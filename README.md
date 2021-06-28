@@ -52,6 +52,9 @@ The package exports a `Board` component which is the one you'd use to render the
 | style               | `StyleProp`                                             |    no    | Style of the board                                                      |
 | columnWidth         | `number`                                                |    no    | Initial min column width                                                |
 | accessoryRight      | `function\|View`                                        |    no    | Render end of the board. Useful when rendering virtual add more column. |
+| activeRowStyle      | `StyleProp`                                             |    no    | A custom style for the row when being dragged.                          |
+| activeRowRotation   | `number`                                                |    no    | Degrees to rotate the row when being dragged. Default is 8.             |
+| scrollThreshold     | `number`                                                |    no    | Offset X or Y to calculate scroll from. Default is 50.                  |
 
 ### `Repository`
 
