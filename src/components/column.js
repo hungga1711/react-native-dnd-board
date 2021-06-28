@@ -13,6 +13,7 @@ const Column = ({
   renderRow,
   scrollEnabled,
   columnWidth,
+  onDragStartCallback,
   onRowPress = () => {},
 }) => {
   const [rows, setRows] = useState(column.rows);
@@ -43,6 +44,7 @@ const Column = ({
           renderItem={renderRow}
           hidden={item.hidden}
           onPress={() => onRowPress(item)}
+          onDragStartCallback={onDragStartCallback}
         />
       </View>
     );
