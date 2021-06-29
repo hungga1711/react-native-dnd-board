@@ -4,8 +4,11 @@ import Animated from 'react-native-reanimated';
 
 import style from '../style';
 
-const Row = memo(({ row, move, renderItem, hidden, onPress }) => {
+const Row = memo(({ row, move, renderItem, hidden, onPress, onDragStartCallback }) => {
   const onDragBegin = () => {
+    if (onDragStartCallback) {
+      onDragStartCallback();
+    }
     const hoverComponent = renderItem({
       move,
       item: row.data,

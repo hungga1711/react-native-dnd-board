@@ -48,10 +48,16 @@ The package exports a `Board` component which is the one you'd use to render the
 | renderRow           | `({ item, index }) => {}`                               |   yes    | Function responsible for rendering row item                             |
 | renderColumnWrapper | `({ item, index, columnComponent, layoutProps }) => {}` |   yes    | Function responsible for rendering wrapper of the column                |
 | onRowPress          | `(row) => {}`                                           |    no    | Function invoked when row pressed                                       |
+| onDragStart         | `() => {}`                                              |    no    | Function invoked when drag is started                                   |
 | onDragEnd           | `(fromColumnId, toColumnId, row) => {}`                 |    no    | Function invoked when drag is finished                                  |
 | style               | `StyleProp`                                             |    no    | Style of the board                                                      |
 | columnWidth         | `number`                                                |    no    | Initial min column width                                                |
 | accessoryRight      | `function\|View`                                        |    no    | Render end of the board. Useful when rendering virtual add more column. |
+| activeRowStyle      | `StyleProp`                                             |    no    | A custom style for the row when being dragged.                          |
+| activeRowRotation   | `number`                                                |    no    | Degrees to rotate the row when being dragged. Default is 8.             |
+| xScrollThreshold    | `number`                                                |    no    | Offset from X to calculate scroll from. Default is 50.                  |
+| yScrollThreshold    | `number`                                                |    no    | Offset from Y for the rows. Default is 50.                              |
+| dragSpeedFactor     | `number`                                                |    no    | When dragging you can accelerate the scrollTo position. Default is 1.   |
 
 ### `Repository`
 

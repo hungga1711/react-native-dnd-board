@@ -28,8 +28,14 @@ const DraggableBoard = ({
   renderRow,
   columnWidth,
   accessoryRight,
-  onRowPress = () => {},
-  onDragEnd = () => {},
+  activeRowStyle,
+  activeRowRotation = 8,
+  xScrollThreshold = SCROLL_THRESHOLD,
+  yScrollThreshold = SCROLL_THRESHOLD,
+  dragSpeedFactor = 1,
+  onRowPress = () => { },
+  onDragStart = () => { },
+  onDragEnd = () => { },
   style: boardStyle,
   horizontal = true,
 }) => {
@@ -121,16 +127,20 @@ const DraggableBoard = ({
 
       if (columnAtPosition && scrollViewRef.current) {
         // handle scroll horizontal
-        if (x + SCROLL_THRESHOLD > Utils.deviceWidth) {
+        if (x + xScrollThreshold > Utils.deviceWidth) {
           scrollOffset.current += SCROLL_STEP;
           scrollViewRef.current.scrollTo({
-            x: scrollOffset.current,
+            x: scrollOffset.current * dragSpeedFactor,
+            y: 0,
+            animated: true
           });
           repository.measureColumnsLayout();
-        } else if (x < SCROLL_THRESHOLD) {
+        } else if (x < xScrollThreshold) {
           scrollOffset.current -= SCROLL_STEP;
           scrollViewRef.current.scrollTo({
-            x: scrollOffset.current,
+            x: scrollOffset.current / dragSpeedFactor,
+            y: 0,
+            animated: true
           });
           repository.measureColumnsLayout();
         }
@@ -165,17 +175,19 @@ const DraggableBoard = ({
 
   const renderHoverComponent = () => {
     if (hoverComponent && hoverRowItem.current) {
+      
       const row = repository.findRow(hoverRowItem.current);
-
+      
       if (row && row.layout) {
         const { x, y, width, height } = row.layout;
         const hoverStyle = [
           style.hoverComponent,
+          activeRowStyle,
           {
-            transform: [{ translateX }, { translateY }, { rotate: '8deg' }],
+            transform: [{ translateX }, { translateY }, { rotate: `${activeRowRotation}deg` }],
           },
           {
-            top: y - SCROLL_THRESHOLD,
+            top: y - yScrollThreshold,
             left: x,
             width,
             height,
@@ -224,6 +236,7 @@ const DraggableBoard = ({
           scrollEnabled={!movingMode}
           columnWidth={columnWidth}
           onRowPress={onRowPress}
+          onDragStartCallback={onDragStart}
         />
       );
 
