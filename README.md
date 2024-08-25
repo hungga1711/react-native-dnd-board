@@ -1,3 +1,8 @@
+## Important Notice: Project No Longer Maintained
+
+I would like to inform you that this project is no longer being actively maintained. Due to personal and professional reasons, I'm unable to continue updating and fixing issues for this project.
+Thank you to everyone who has contributed to and used this project!
+
 # React Native DnD Board
 
 A drag and drop Kanban board for React Native using [Reanimated (V1)](https://github.com/software-mansion/react-native-reanimated) and [React Native Gesture Handler](https://github.com/software-mansion/react-native-gesture-handler).
